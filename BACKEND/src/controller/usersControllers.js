@@ -25,9 +25,11 @@ export const loginController = async (req, res) => {
       return res.status(401).json({ message: 'No autorizado' })
     }
 
-    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: '1h'
-    })
+    const token = jwt.sign(
+      { email: user.email, rol: user.rol, lenguage: user.lenguage },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    )
     const { password: _, ...userWithoutPass } = user
     res.status(200).json({ token, userWithoutPass })
   } catch (error) {
@@ -37,8 +39,8 @@ export const loginController = async (req, res) => {
 
 export const getUsersController = async (req, res) => {
   try {
-    const { email, rol } = req.user
-    res.status(200).json({ email, rol })
+    const { email, rol, lenguage } = req.user
+    res.status(200).json([{ email, rol, lenguage }])
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener usuario', error })
   }

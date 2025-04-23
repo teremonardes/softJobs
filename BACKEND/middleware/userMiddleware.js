@@ -20,8 +20,8 @@ export const getToken = (req, res, next) => {
 
     const verifyToken = token.split(' ')[1]
 
-    const payload = jwt.verify(verifyToken, process.env.JWT_SECRET)
-    req.user = { email: payload.email, rol: payload.rol }
+    const data = jwt.verify(verifyToken, process.env.JWT_SECRET)
+    req.user = { email: data.email, rol: data.rol, lenguage: data.lenguage }
 
     next()
   } catch (error) {
