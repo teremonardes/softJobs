@@ -26,11 +26,20 @@ export const loginController = async (req, res) => {
     }
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
-      expiresIn: '120s'
+      expiresIn: '1h'
     })
     const { password: _, ...userWithoutPass } = user
     res.status(200).json({ token, userWithoutPass })
   } catch (error) {
     res.status(500).json({ message: 'Error al ingresar', error })
+  }
+}
+
+export const getUsersController = async (req, res) => {
+  try {
+    const { email, rol } = req.user
+    res.status(200).json({ email, rol })
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener usuario', error })
   }
 }
